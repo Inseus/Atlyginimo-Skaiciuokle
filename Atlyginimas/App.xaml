@@ -3,7 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Atlyginimas"
              StartupUri="MainWindow.xaml">
+
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="mouseOverColor"
+                    Color="White" />
+        <Style TargetType="ToggleButton" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" ClipToBounds="True">
+                            <!-- Outer Rectangle with rounded corners. -->
+                            <Ellipse x:Name="outEllipse" HorizontalAlignment="Stretch" Stretch="Uniform" VerticalAlignment="Stretch" Stroke="{TemplateBinding Background}"  StrokeThickness="0" Fill="White" />
+                            <!-- Present Content (text) of the button. -->
+                            <DockPanel Name="myContentPresenterDockPanel">
+                                <ContentPresenter x:Name="myContentPresenter" Content="{TemplateBinding  Content}" TextBlock.Foreground="Coral" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 0, 2"/>
+                            </DockPanel>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="outEllipse" Value="Black" />
+                                <Setter Property="Rectangle.Opacity" TargetName="outEllipse" Value="0.5" />
+                                <Setter Property="TextBlock.Foreground" TargetName="myContentPresenter" Value="White" />
+                                <Setter Property="ContentPresenter.BitmapEffect"        TargetName="myContentPresenter">
+                                    <Setter.Value>
+                                        <BlurBitmapEffect Radius="1" />
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Trigger>
+
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="outEllipse" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" ClipToBounds="True">
+                            <!-- Outer Rectangle with rounded corners. -->
+                            <Rectangle x:Name="outerSquare" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="{TemplateBinding Background}" RadiusX="0" RadiusY="0" StrokeThickness="0" Fill="Coral" />
+                            <!-- Inner Rectangle with rounded corners. -->
+                            <Rectangle x:Name="innerRectangle" HorizontalAlignment="Left" VerticalAlignment="Center"  Stroke="White" StrokeThickness="10" Fill="{TemplateBinding Background}" Margin="10, 0" RadiusX="20" RadiusY="20" />
+                            <!-- Present Content (text) of the button. -->
+                            <DockPanel Name="myContentPresenterDockPanel">
+                                <ContentPresenter x:Name="myContentPresenter" Content="{TemplateBinding  Content}" TextBlock.Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </DockPanel>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="outerSquare" Value="White" />
+                                <Setter Property="Rectangle.Opacity" TargetName="outerSquare" Value="0.8" />
+                                <Setter Property="Rectangle.Stroke" TargetName="innerRectangle" Value="Coral"/>
+                                <Setter Property="TextBlock.Foreground" TargetName="myContentPresenter" Value="Coral" />
+                            </Trigger>
+
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Rectangle.Fill" TargetName="outerSquare" Value="White" />
+                                <Setter Property="Rectangle.Stroke" TargetName="innerRectangle" Value="Coral"/>
+                                <Setter Property="TextBlock.Foreground" TargetName="myContentPresenter" Value="Coral" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
+    
+    
 </Application>
