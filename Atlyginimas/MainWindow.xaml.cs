@@ -18,13 +18,18 @@ namespace Atlyginimas
 {
     public partial class MainWindow : Window
     {
+        //statinis sąrašas procentams saugoti
         static List<float> percentages = new List<float>();
 
         public MainWindow()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Button_Click_(1-2) - šone esantys skirtukai
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ResultGrid_1.Visibility = Visibility.Visible;
@@ -45,22 +50,22 @@ namespace Atlyginimas
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             ResultGrid_2.Visibility = Visibility.Collapsed;
             ResultGrid_1.Visibility = Visibility.Collapsed;
             Settings.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Tikrina, ar į laukelius yra įvedami tinkami simboliai (0-9 ir . )
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9.]+");
             e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            mok_1.Text = "haha";
         }
 
         private void Set_Percentages()
@@ -77,6 +82,9 @@ namespace Atlyginimas
                 }
                 else
                 {
+                    if (Regex.Replace(set.Text, @"\s+", "") == "")
+                        set.Text = "Nurodykite procentus";
+                    else
                     set.Text = "Netinkamas formatas";
                 }
             }
@@ -158,8 +166,7 @@ namespace Atlyginimas
         private float Count_Result(float sum, bool a_s)
         {
             //pradine suma * 100 / (100 - procentu suma)
-            float result = sum * 100 / (100 - Count_Percentages(a_s));
-            return result;
+            return (sum * 100 / (100 - Count_Percentages(a_s)));
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
@@ -177,13 +184,13 @@ namespace Atlyginimas
 
                 if (success1)
                 {
+                    sum = Count_Result(sum1, false);
                     if (success2)
                     {
                         int i = 0;
                         int j = 1;
 
                         sum += Count_Result(sum2, true);
-                        sum += Count_Result(sum1, false);
 
                         foreach (var result in collection)
                         {
@@ -204,7 +211,6 @@ namespace Atlyginimas
                     else
                     {
                         int i = 0;
-                        sum = Count_Result(sum1, false);
                         foreach (var result in collection)
                         {
                             if (result != last)
