@@ -220,7 +220,7 @@ namespace Atlyginimas
                     }
                 }
 
-                else if (success1)
+                else if (success2)
                 {
                     int i = 1;
                     sum = Count_Result(sum2, true);
