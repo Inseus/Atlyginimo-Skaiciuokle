@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 
 namespace Atlyginimas
@@ -26,7 +18,7 @@ namespace Atlyginimas
             InitializeComponent();
         }
         /// <summary>
-        /// Button_Click_(1-2) - šone esantys skirtukai
+        /// Button_Click_(0-2) - šone esantys skirtukai
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -67,7 +59,7 @@ namespace Atlyginimas
             Regex regex = new Regex("[^0-9.]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        //Išsaugo procentus į sąrašą
         private void Set_Percentages()
         {
             percentages = new List<float>();
@@ -85,11 +77,15 @@ namespace Atlyginimas
                     if (Regex.Replace(set.Text, @"\s+", "") == "")
                         set.Text = "Nurodykite procentus";
                     else
-                    set.Text = "Netinkamas formatas";
+                        set.Text = "Netinkamas formatas";
                 }
             }
         }
-
+        /// <summary>
+        /// Skaičiuoja punkto "į rankas" rezultatus
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (percentages.Count == 6)
@@ -105,9 +101,9 @@ namespace Atlyginimas
                         int i = 1;
                         foreach (var result in collection)
                         {
-                            if (result != last)
+                            if (result != last) //tikrina, ar tai paskutinis rezultatų laukas
                             {
-                                result.Text = Math.Round((sum * percentages[i] / 100), 2).ToString() + " €";
+                                result.Text = Math.Round((sum * percentages[i] / 100), 2).ToString() + " €"; //formulė: suma * procentai / 100. Apvalinama iki šimtųjų
                                 i += 2;
                             }
                             else
@@ -141,7 +137,7 @@ namespace Atlyginimas
                 Settings.Visibility = Visibility.Visible;
             }
         }
-
+        // procentų suma. a_s - autorinė sutartis?
         private float Count_Percentages(bool a_s)
         {
             float total = 0;
@@ -162,7 +158,12 @@ namespace Atlyginimas
 
             return (total);
         }
-
+        /// <summary>
+        /// apskaičiuoja pradinę sumą iš sumos, gautos į rankas.
+        /// </summary>
+        /// <param name="sum"> - suma </param>
+        /// <param name="a_s"> - autorinė sutartis? </param>
+        /// <returns></returns>
         private float Count_Result(float sum, bool a_s)
         {
             //pradine suma * 100 / (100 - procentu suma)
@@ -181,10 +182,11 @@ namespace Atlyginimas
                 bool success1 = float.TryParse(Regex.Replace(input_2.Text, @"\s+", ""), out sum1);
                 bool success2 = float.TryParse(Regex.Replace(input_3.Text, @"\s+", ""), out sum2);
                 float sum = 0;
-
+                //ar įvesta SODROS suma
                 if (success1)
                 {
                     sum = Count_Result(sum1, false);
+                    //ar įvesta ir autorinių sutarčių suma
                     if (success2)
                     {
                         int i = 0;
@@ -225,7 +227,7 @@ namespace Atlyginimas
                         }
                     }
                 }
-
+                //ar įvesta tik autorinių sutarčių suma
                 else if (success2)
                 {
                     int i = 1;
